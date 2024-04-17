@@ -1,6 +1,5 @@
 package com.example.uberreviewservice.repositories;
 
-import com.example.uberreviewservice.models.Booking;
 import com.example.uberreviewservice.models.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookingRepository extends JpaRepository <Booking, Long> {
+public interface DriverRepository extends JpaRepository<Driver,Long> {
 
-    List<Booking>  findAllByDriverId(Long driverId);
+
+    Optional<Driver> findByIdAndLicenseNumber(Long id , String licenseNumber);
 }
