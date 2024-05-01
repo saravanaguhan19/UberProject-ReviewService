@@ -2,19 +2,17 @@ package com.example.uberreviewservice.services;
 
 import com.example.uberreviewservice.models.Booking;
 import com.example.uberreviewservice.models.Driver;
-import com.example.uberreviewservice.models.Review;
 import com.example.uberreviewservice.repositories.BookingRepository;
 import com.example.uberreviewservice.repositories.DriverRepository;
 import com.example.uberreviewservice.repositories.ReviewRepository;
-import com.sun.source.tree.LambdaExpressionTree;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Book;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.ListResourceBundle;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ReviewService implements CommandLineRunner {
@@ -31,6 +29,7 @@ public class ReviewService implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         System.out.println("**********************");
 //        Review r =Review.builder()
@@ -59,17 +58,35 @@ public class ReviewService implements CommandLineRunner {
 //            bookingRepository.delete(b.get());
 //        }
 
-        Optional<Driver> driver = driverRepository.findById(1L);
-
-        if(driver.isPresent()){
-            System.out.println(driver.get().getName());
-//            List<Booking> bookings = bookingRepository.findAllByDriverId(1L);
-//                    for(Booking booking : bookings){
-//                        System.out.println(booking.getBookingStatus());
+//        Optional<Driver> driver = driverRepository.findById(1L);
+//
+//        if(driver.isPresent()){
+//            System.out.println(driver.get().getName());
+//
+//            List<Booking> b = driver.get().getBookings();
+//
+//
+////            List<Booking> bookings = bookingRepository.findAllByDriverId(1L);
+//                    for(Booking booking : b){
+//                        System.out.println(booking.getId());
 //                    }
-        }
+//        }
 
-        Optional<Booking> b = bookingRepository.findById(1L);
+//        Optional<Booking> b = bookingRepository.findById(1L);
+
+//        CustomDriver driver = (CustomDriver) driverRepository.hqlFindByIdAndLicense(1L , "DL121212");
+//        System.out.println(driver.getName());
+
+        List<Long> driverIds = new ArrayList<>(Arrays.asList(1L,2L,3L,4L,5L,6L));
+
+        List<Driver> drivers = driverRepository.findAllByIdIn(driverIds);
+
+//        List<Booking> bookings = bookingRepository.findAllByDriverIn(drivers);
+
+        for(Driver driver : drivers){
+             List<Booking> bookings = driver.getBookings();
+            bookings.forEach(booking -> System.out.println(booking.getId()));
+        }
 
     }
 }
